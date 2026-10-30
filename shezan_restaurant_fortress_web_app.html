@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shezan Restaurant Fortress - Lahore</title>
+    <!-- Favicon using Shezan Circular Red Emblem SVG -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%237A0000'/><path d='M30 50 Q50 20 70 50 Q50 80 30 50 Z' fill='%23E6B800'/><path d='M50 30 Q80 50 50 70 Q20 50 50 30 Z' fill='%23FFFFFF'/></svg>">
+    
+    <style>
+        /* Typography: Alte Haas Grotesk self-hosted font-face definition with standard fallbacks */
+        @font-face {
+            font-family: 'Alte Haas Grotesk';
+            src: local('Alte Haas Grotesk'), local('AlteHaasGrotesk-Regular'), url('data:font/woff2;base64,') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Alte Haas Grotesk';
+            src: local('Alte Haas Grotesk Bold'), local('AlteHaasGrotesk-Bold'), url('data:font/woff2;base64,') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --primary-burgundy: #7A0000;
+            --primary-burgundy-dark: #520000;
+            --primary-burgundy-light: #990000;
+            --accent-gold: #B8860B;
+            --accent-gold-light: #D4AF37;
+            --bg-cream: #FAF9F5;
+            --bg-card: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --border-color: #E5E7EB;
+            --focus-ring: #005FCC;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Alte Haas Grotesk', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-main);
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Focus rings for full keyboard accessibility */
+        a:focus, button:focus, input:focus, select:focus, textarea:focus {
+            outline: 3px solid var(--focus-ring);
+            outline-offset: 2px;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: var(--primary-burgundy);
+            color: #FFFFFF;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+
+        .brand-logo {
+            height: 48px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--primary-burgundy-dark);
+            color: var(--accent-gold-light);
+        }
+
+        .cart-btn {
+            background-color: var(--accent-gold);
+            color: #FFFFFF;
+            border: 1px solid #8B6508;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cart-btn:hover {
+            background-color: var(--accent-gold-light);
+            color: #000000;
+        }
+
+        /* Hero Announcement Banner */
+        .hero-banner {
+            background-color: var(--primary-burgundy-dark);
+            color: #FAF9F5;
+            border-bottom: 3px solid var(--accent-gold);
+            padding: 2.5rem 1rem;
+            text-align: center;
+        }
+
+        .hero-banner h1 {
+            font-size: 2.2rem;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .hero-banner p {
+            font-size: 1.1rem;
+            color: #E5E7EB;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-location {
+            display: inline-block;
+            margin-top: 0.75rem;
+            background-color: rgba(255,255,255,0.1);
+            padding: 0.35rem 0.85rem;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        /* Main Layout */
+        main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            flex: 1;
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        /* Menu Section & Filters */
+        .category-nav {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .cat-btn {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            background-color: var(--primary-burgundy);
+            color: #FFFFFF;
+            border-color: var(--primary-burgundy);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dish-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .dish-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #F3F4F6;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dish-body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .dish-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-burgundy-dark);
+            margin-bottom: 0.35rem;
+        }
+
+        .dish-desc {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .dish-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 0.5rem;
+            border-top: 1px solid #F3F4F6;
+        }
+
+        .dish-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .btn-add {
+            background-color: var(--primary-burgundy);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.4rem 0.85rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-add:hover {
+            background-color: var(--primary-burgundy-light);
+        }
+
+        /* Forms Styling */
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            color: var(--text-main);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.25rem;
+            width: 18px;
+            height: 18px;
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-burgundy);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-burgundy-dark);
+        }
+
+        .btn-secondary {
+            background-color: #6B7280;
+            color: #FFFFFF;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4B5563;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-burgundy);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dash-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dash-tab-btn {
+            padding: 0.5rem 1rem;
+            background: #E5E7EB;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .dash-tab-btn.active {
+            background: var(--primary-burgundy);
+            color: #FFFFFF;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .data-table th, .data-table td {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            background-color: #F9FAFB;
+            font-weight: 700;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-pending { background-color: #FEF3C7; color: #92400E; }
+        .status-preparing { background-color: #DBEAFE; color: #1E40AF; }
+        .status-ready { background-color: #D1FAE5; color: #065F46; }
+        .status-delivered { background-color: #E0E7FF; color: #3730A3; }
+        .status-cancelled { background-color: #FEE2E2; color: #991B1B; }
+
+        /* Payment Stand-in Notice */
+        .placeholder-notice {
+            background-color: #FFFBEB;
+            border: 1px solid #F59E0B;
+            color: #92400E;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Business Compliance Block */
+        .business-block {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .business-block h3 {
+            color: var(--primary-burgundy);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Cookie Consent Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1F2937;
+            color: #FFFFFF;
+            padding: 1rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .cookie-text {
+            font-size: 0.9rem;
+            max-width: 800px;
+        }
+
+        .cookie-text a {
+            color: var(--accent-gold-light);
+            text-decoration: underline;
+        }
+
+        .cookie-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 0.4rem 0.85rem;
+            border-radius: 4px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .cookie-btn-accept {
+            background-color: var(--accent-gold);
+            color: #FFFFFF;
+        }
+
+        .cookie-btn-reject {
+            background-color: #4B5563;
+            color: #FFFFFF;
+        }
+
+        /* Modal View */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            z-index: 500;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #FFFFFF;
+            border-radius: 6px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #111827;
+            color: #9CA3AF;
+            padding: 2rem 1rem 1rem 1rem;
+            margin-top: auto;
+            font-size: 0.875rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col h4 {
+            color: #FFFFFF;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.4rem;
+        }
+
+        .footer-col a {
+            color: #9CA3AF;
+            text-decoration: none;
+        }
+
+        .footer-col a:hover {
+            color: #FFFFFF;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 1rem;
+            border-top: 1px solid #374151;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* Utility Helpers */
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .d-flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .align-center { align-items: center; }
+        
+        /* Media Queries */
+        @media (max-width: 640px) {
+            .header-container { flex-direction: column; align-items: flex-start; }
+            .nav-links { flex-wrap: wrap; width: 100%; gap: 0.5rem; }
+            .hero-banner h1 { font-size: 1.6rem; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo-link" onclick="switchView('home-view')" aria-label="Shezan Restaurant Fortress Home">
+                <!-- Shezan Full SVG Typography Logo with Swirl Emblem -->
+                <svg class="brand-logo" viewBox="0 0 320 60" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shezan Restaurant Logo">
+                    <title>Shezan Restaurant</title>
+                    <!-- Emblem -->
+                    <g transform="translate(5, 5)">
+                        <circle cx="25" cy="25" r="24" fill="#520000" />
+                        <path d="M15 25 C25 10, 35 10, 35 25 C35 40, 15 40, 15 25 Z" fill="#D4AF37" />
+                        <path d="M25 15 C40 25, 40 35, 25 35 C10 35, 10 15, 25 15 Z" fill="#FFFFFF" opacity="0.9" />
+                    </g>
+                    <!-- Brand Typography -->
+                    <text x="65" y="36" fill="#FFFFFF" font-family="'Alte Haas Grotesk', sans-serif" font-size="30" font-weight="bold" letter-spacing="1">Shezan</text>
+                    <text x="66" y="50" fill="#D4AF37" font-family="'Alte Haas Grotesk', sans-serif" font-size="11" font-weight="normal" letter-spacing="3">RESTAURANT FORTRESS</text>
+                </svg>
+            </a>
+
+            <nav aria-label="Main Navigation">
+                <ul class="nav-links">
+                    <li><a href="#" id="nav-home" class="active" onclick="switchView('home-view')">Menu</a></li>
+                    <li><a href="#" id="nav-reservation" onclick="switchView('reservation-view')">Table Reservation</a></li>
+                    <li><a href="#" id="nav-contact" onclick="switchView('contact-view')">Contact Us</a></li>
+                    <li>
+                        <button class="cart-btn" onclick="openCartModal()" aria-label="View Shopping Cart">
+                            <span>Cart</span>
+                            <span id="cart-count-badge" style="background: #FFFFFF; color: #7A0000; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.8rem;">0</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Location Banner -->
+    <section class="hero-banner" id="hero-banner-element">
+        <h1 id="site-announcement-title">Shezan Restaurant Fortress</h1>
+        <p id="site-announcement-subtitle">Authentic Pakistani Karahi, Tender Bar BQ, Chinese Favorites, and Classic Desserts.</p>
+        <div class="hero-location">
+            <span>Location: Fortress Stadium, Cantt, Lahore, Punjab, Pakistan</span>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main>
+        <!-- SECTION 1: HOME & MENU -->
+        <section id="home-view" class="view-section active">
+            <h2 class="mb-2" style="font-size: 1.5rem; color: var(--primary-burgundy);">Explore Our Menu</h2>
+            
+            <!-- Category Navigation -->
+            <div class="category-nav" role="tablist" aria-label="Menu Categories">
+                <button class="cat-btn active" onclick="filterCategory('all', this)" role="tab" aria-selected="true">All Items</button>
+                <button class="cat-btn" onclick="filterCategory('popular', this)" role="tab" aria-selected="false">Popular Items</button>
+                <button class="cat-btn" onclick="filterCategory('steaks', this)" role="tab" aria-selected="false">Steaks</button>
+                <button class="cat-btn" onclick="filterCategory('chinese', this)" role="tab" aria-selected="false">Chinese</button>
+                <button class="cat-btn" onclick="filterCategory('mains', this)" role="tab" aria-selected="false">Mains & Karahi</button>
+                <button class="cat-btn" onclick="filterCategory('barbq', this)" role="tab" aria-selected="false">Bar BQ</button>
+            </div>
+
+            <!-- Menu Grid View -->
+            <div class="menu-grid" id="menu-container">
+                <!-- Dynamically rendered via JavaScript using authentic menu listings -->
+            </div>
+        </section>
+
+        <!-- SECTION 2: TABLE RESERVATION FORM -->
+        <section id="reservation-view" class="view-section">
+            <div class="form-card">
+                <h2 class="mb-2" style="color: var(--primary-burgundy);">Reserve a Table</h2>
+                <p class="mb-3" style="color: var(--text-muted); font-size: 0.95rem;">
+                    Book your table at Shezan Restaurant Fortress Stadium, Lahore. Please fill out the form below.
+                </p>
+
+                <form id="reservation-form" onsubmit="handleReservationSubmit(event)">
+                    <div class="form-group">
+                        <label for="res-name">Full Name *</label>
+                        <input type="text" id="res-name" class="form-control" required placeholder="e.g. Tariq Mahmood">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="res-phone">Phone Number *</label>
+                        <input type="tel" id="res-phone" class="form-control" required placeholder="e.g. +92 300 1234567">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="res-date">Date *</label>
+                            <input type="date" id="res-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="res-time">Time *</label>
+                            <input type="time" id="res-time" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="res-guests">Number of Guests *</label>
+                        <select id="res-guests" class="form-control" required>
+                            <option value="2">2 Guests</option>
+                            <option value="4" selected>4 Guests</option>
+                            <option value="6">6 Guests</option>
+                            <option value="8">8 Guests</option>
+                            <option value="10+">10+ Guests (Hall/Large Party)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="res-notes">Special Requests / Seating Preference</label>
+                        <textarea id="res-notes" class="form-control" rows="3" placeholder="e.g. Family area, high chair required"></textarea>
+                    </div>
+
+                    <!-- Consent Checkboxes (UNTICKED BY DEFAULT) -->
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="res-consent-terms" required>
+                        <label for="res-consent-terms">I agree to the <a href="#" onclick="switchView('legal-view'); showLegalTab('terms');">Terms & Conditions</a> and consent to Shezan Restaurant processing my contact details for table reservation purposes. *</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="res-consent-marketing">
+                        <label for="res-consent-marketing">Optional: Receive SMS updates regarding your reservation and promotional offers from Shezan Restaurant Fortress. You may unsubscribe at any time.</label>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Confirm Table Reservation</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- SECTION 3: CONTACT & DIRECT ORDER FORM -->
+        <section id="contact-view" class="view-section">
+            <div class="form-card">
+                <h2 class="mb-2" style="color: var(--primary-burgundy);">Contact Us & Inquiries</h2>
+                <p class="mb-3" style="color: var(--text-muted); font-size: 0.95rem;">
+                    Have questions about catering, private events, or feedback regarding your dining experience? Send us a message directly.
+                </p>
+
+                <form id="contact-form" onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <label for="contact-name">Full Name *</label>
+                        <input type="text" id="contact-name" class="form-control" required placeholder="e.g. Ayesha Khan">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-email">Email Address *</label>
+                        <input type="email" id="contact-email" class="form-control" required placeholder="e.g. ayesha@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-phone">Contact Phone *</label>
+                        <input type="tel" id="contact-phone" class="form-control" required placeholder="e.g. +92 42 36623000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-subject">Subject *</label>
+                        <select id="contact-subject" class="form-control" required>
+                            <option value="General Inquiry">General Inquiry</option>
+                            <option value="Event / Banquet Booking">Event / Banquet Booking</option>
+                            <option value="Customer Feedback">Customer Feedback</option>
+                            <option value="Data Inquiry">Data Inquiry / Privacy Request</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-message">Your Message *</label>
+                        <textarea id="contact-message" class="form-control" rows="4" required placeholder="Write your query here..."></textarea>
+                    </div>
+
+                    <!-- Unticked by Default Consent Checkbox -->
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="contact-consent" required>
+                        <label for="contact-consent">I consent to Shezan Restaurant storing and processing my name, email, and phone number solely to respond to this inquiry. *</label>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Send Message</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- SECTION 4: LEGAL & POLICY PAGES -->
+        <section id="legal-view" class="view-section">
+            <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 6px; padding: 1.5rem;">
+                <div class="dash-tabs" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; flex-wrap: wrap;">
+                    <button class="dash-tab-btn active" id="legal-tab-terms" onclick="showLegalTab('terms')">Terms & Conditions</button>
+                    <button class="dash-tab-btn" id="legal-tab-privacy" onclick="showLegalTab('privacy')">Privacy Policy</button>
+                    <button class="dash-tab-btn" id="legal-tab-refund" onclick="showLegalTab('refund')">Refund Policy</button>
+                    <button class="dash-tab-btn" id="legal-tab-tos" onclick="showLegalTab('tos')">Terms of Service</button>
+                    <button class="dash-tab-btn" id="legal-tab-cookies" onclick="showLegalTab('cookies')">Cookie Policy</button>
+                    <button class="dash-tab-btn" id="legal-tab-deletion" onclick="showLegalTab('deletion')">Data Deletion Request</button>
+                </div>
+
+                <div id="legal-content-container" style="padding-top: 1rem; line-height: 1.6;">
+                    <!-- Policy text injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: RESTAURANT DASHBOARD (ADMIN) -->
+        <section id="dashboard-view" class="view-section">
+            <div class="dashboard-header">
+                <div>
+                    <h2 style="color: var(--primary-burgundy);">Restaurant Management Dashboard</h2>
+                    <p style="font-size: 0.875rem; color: var(--text-muted);">Shezan Restaurant Fortress - Operations & Content Control</p>
+                </div>
+                <div>
+                    <span style="background: #D1FAE5; color: #065F46; padding: 0.35rem 0.75rem; border-radius: 4px; font-weight: bold; font-size: 0.85rem;">System Active</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Sub-Tabs -->
+            <div class="dash-tabs">
+                <button class="dash-tab-btn active" id="dash-btn-orders" onclick="switchDashTab('dash-orders')">Orders Management</button>
+                <button class="dash-tab-btn" id="dash-btn-bookings" onclick="switchDashTab('dash-bookings')">Bookings & Reservations</button>
+                <button class="dash-tab-btn" id="dash-btn-listing" onclick="switchDashTab('dash-listing')">App Listing & Content</button>
+                <button class="dash-tab-btn" id="dash-btn-payments" onclick="switchDashTab('dash-payments')">Payment Settings</button>
+            </div>
+
+            <!-- Tab 1: Orders Management -->
+            <div id="dash-orders" class="dash-sub-view">
+                <h3 class="mb-2">Recent Customer Orders</h3>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Items Ordered</th>
+                                <th>Total Amount</th>
+                                <th>Current Status</th>
+                                <th>Update Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 2: Bookings & Reservations -->
+            <div id="dash-bookings" class="dash-sub-view" style="display: none;">
+                <h3 class="mb-2">Table Reservations</h3>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Customer Name</th>
+                                <th>Phone</th>
+                                <th>Date & Time</th>
+                                <th>Guests</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-table-body">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 3: Listing & Content Management -->
+            <div id="dash-listing" class="dash-sub-view" style="display: none;">
+                <div class="form-card" style="max-width: 100%;">
+                    <h3 class="mb-2">Listing Visibility & Site Announcements</h3>
+                    
+                    <div class="form-group" style="padding: 1rem; background: #F9FAFB; border: 1px solid var(--border-color); border-radius: 4px;">
+                        <label style="font-weight: bold; display: block; margin-bottom: 0.5rem;">Online Ordering Availability Status</label>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <span id="listing-status-text" style="font-weight: bold; color: #065F46;">LISTING IS CURRENTLY ACTIVE & ACCEPTING ORDERS</span>
+                            <button type="button" class="btn-secondary" onclick="toggleListingStatus()" id="toggle-listing-btn">Toggle Deactivate Listing</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dash-banner-title">Main Hero Announcement Headline</label>
+                        <input type="text" id="dash-banner-title" class="form-control" value="Shezan Restaurant Fortress">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dash-banner-sub">Hero Subtitle Copy</label>
+                        <input type="text" id="dash-banner-sub" class="form-control" value="Authentic Pakistani Karahi, Tender Bar BQ, Chinese Favorites, and Classic Desserts.">
+                    </div>
+
+                    <button type="button" class="btn-primary" onclick="updateSiteContent()" style="width: auto;">Save Content Updates</button>
+                </div>
+            </div>
+
+            <!-- Tab 4: Payment Settings (Dummy Placeholders) -->
+            <div id="dash-payments" class="dash-sub-view" style="display: none;">
+                <div class="placeholder-notice">
+                    <strong>Payment Gateway Configuration Notice:</strong> Payment methods shown below are dummy non-functional stand-ins for layout display purposes. No live payment gateway connection is active.
+                </div>
+
+                <div class="form-card" style="max-width: 100%;">
+                    <h3 class="mb-2">Payment Method Options (Stand-in Configuration)</h3>
+
+                    <div class="form-group" style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>Cash on Delivery (COD)</strong>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Pay cash upon delivery or pickup.</div>
+                            </div>
+                            <span style="background: #E5E7EB; color: #374151; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">NON-FUNCTIONAL PLACEHOLDER</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>Credit / Debit Card Terminal Gateway</strong>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Local bank online card payment integration stand-in.</div>
+                            </div>
+                            <span style="background: #E5E7EB; color: #374151; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">NON-FUNCTIONAL PLACEHOLDER</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>Local Mobile Wallet (JazzCash / EasyPaisa)</strong>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">Direct wallet transfer integration stand-in.</div>
+                            </div>
+                            <span style="background: #E5E7EB; color: #374151; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">NON-FUNCTIONAL PLACEHOLDER</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BUSINESS DETAILS & COMPLIANCE BLOCK -->
+        <section class="business-block">
+            <h3>Shezan Restaurant Fortress - Business Details & Compliance</h3>
+            <p><strong>Legal Name:</strong> Shezan International Limited / Shezan Restaurant Fortress</p>
+            <p><strong>Address:</strong> Fortress Stadium, Cantt, Lahore, Punjab, Pakistan</p>
+            <p><strong>Contact Telephone:</strong> +92 42 36623000</p>
+            <p><strong>Tax & Registration Number:</strong> [Placeholder: PK-NTN-1234567-8]</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #6B7280;">
+                All menu items, dish descriptions, and prices listed in PKR (Rs.) reflect accurate restaurant operational details.
+            </p>
+        </section>
+    </main>
+
+    <!-- SHOPPING CART MODAL -->
+    <div class="modal" id="cart-modal" aria-hidden="true" role="dialog" aria-labelledby="cart-modal-title">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeCartModal()" aria-label="Close Shopping Cart">&times;</button>
+            <h2 id="cart-modal-title" style="color: var(--primary-burgundy); margin-bottom: 1rem;">Your Order Items</h2>
+            
+            <div id="cart-items-list" style="margin-bottom: 1rem; max-height: 300px; overflow-y: auto;">
+                <!-- Dynamically populated cart items -->
+            </div>
+
+            <div style="border-top: 2px solid var(--border-color); padding-top: 1rem; margin-bottom: 1rem;">
+                <div class="d-flex justify-between align-center mb-1">
+                    <span>Subtotal:</span>
+                    <strong id="cart-subtotal">Rs. 0</strong>
+                </div>
+                <div class="d-flex justify-between align-center mb-1" style="font-size: 0.9rem; color: var(--text-muted);">
+                    <span>Delivery / Service Fee:</span>
+                    <span>Rs. 150</span>
+                </div>
+                <div class="d-flex justify-between align-center" style="font-size: 1.2rem; font-weight: bold; color: var(--primary-burgundy);">
+                    <span>Total (Incl. Tax):</span>
+                    <span id="cart-total">Rs. 150</span>
+                </div>
+            </div>
+
+            <!-- Delivery Address Form -->
+            <form id="checkout-form" onsubmit="handleCheckout(event)">
+                <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Delivery Details</h3>
+                <div class="form-group">
+                    <label for="order-name">Customer Full Name *</label>
+                    <input type="text" id="order-name" class="form-control" required placeholder="e.g. Usman Chaudhry">
+                </div>
+                <div class="form-group">
+                    <label for="order-phone">Phone Number *</label>
+                    <input type="tel" id="order-phone" class="form-control" required placeholder="e.g. +92 321 9876543">
+                </div>
+                <div class="form-group">
+                    <label for="order-address">Delivery Address in Lahore *</label>
+                    <textarea id="order-address" class="form-control" rows="2" required placeholder="House number, Street, Phase / Block, Lahore"></textarea>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="order-consent-terms" required>
+                    <label for="order-consent-terms">I consent to Shezan Restaurant processing my contact info to fulfill this order and agree to the <a href="#" onclick="closeCartModal(); switchView('legal-view'); showLegalTab('terms');">Terms & Conditions</a>. *</label>
+                </div>
+
+                <button type="submit" class="btn-primary" id="checkout-btn">Place Cash on Delivery Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>Shezan Fortress</h4>
+                <p style="font-size: 0.85rem; line-height: 1.4;">Fortress Stadium, Cantt, Lahore, Punjab, Pakistan.</p>
+                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Ph: +92 42 36623000</p>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Navigation</h4>
+                <ul>
+                    <li><a href="#" onclick="switchView('home-view')">Full Food Menu</a></li>
+                    <li><a href="#" onclick="switchView('reservation-view')">Table Reservation</a></li>
+                    <li><a href="#" onclick="switchView('contact-view')">Contact Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Compliance & Policies</h4>
+                <ul>
+                    <li><a href="#" onclick="switchView('legal-view'); showLegalTab('terms');">Terms & Conditions</a></li>
+                    <li><a href="#" onclick="switchView('legal-view'); showLegalTab('privacy');">Privacy Policy</a></li>
+                    <li><a href="#" onclick="switchView('legal-view'); showLegalTab('refund');">Refund Policy</a></li>
+                    <li><a href="#" onclick="switchView('legal-view'); showLegalTab('tos');">Terms of Service</a></li>
+                    <li><a href="#" onclick="switchView('legal-view'); showLegalTab('cookies');">Cookie Policy</a></li>
+                    <li><a href="#" onclick="switchView('legal-view'); showLegalTab('deletion');">Data Deletion Request</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Restaurant Staff</h4>
+                <ul>
+                    <li>
+                        <a href="#" onclick="switchView('dashboard-view')" style="display: inline-block; padding: 0.35rem 0.75rem; background: var(--primary-burgundy-light); color: #FFFFFF; border-radius: 4px; font-weight: bold;">
+                            Restaurant Dashboard
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Shezan International Limited / Shezan Restaurant Fortress. All rights reserved.</p>
+            <p><a href="#" onclick="openCookieSettings()" style="color: var(--accent-gold-light); text-decoration: underline;">Manage Cookie Consent Preferences</a></p>
+        </div>
+    </footer>
+
+    <!-- COOKIE CONSENT BANNER -->
+    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie Consent Banner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <strong>Cookie & Consent Preferences:</strong> We use necessary cookies to enable essential site features like your ordering cart and table reservation preferences. No non-essential tracking cookies are loaded without your explicit consent. View our <a href="#" onclick="switchView('legal-view'); showLegalTab('cookies');">Cookie Policy</a>.
+            </div>
+            <div class="cookie-actions">
+                <button class="cookie-btn cookie-btn-accept" onclick="acceptAllCookies()">Accept All</button>
+                <button class="cookie-btn cookie-btn-reject" onclick="rejectNonEssentialCookies()">Reject Non-Essential</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        /*
+         * AUDIT OF THIRD-PARTY SCRIPTS:
+         * No external third-party scripts, analytics libraries, or external font stylesheets are imported.
+         * Zero tracking scripts or third-party cookies are executed.
+         */
+
+        // Authentic Shezan Restaurant Fortress Menu Data
+        const MENU_ITEMS = [
+            // Popular / Featured
+            { id: 1, name: "Chicken Biryani", price: 1150, category: "popular", desc: "Classic fragrant basmati rice cooked with succulent spiced chicken and aromatic herbs.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><circle cx='150' cy='100' r='60' fill='%23E6B800'/><path d='M120 100 Q150 70 180 100 Q150 130 120 100 Z' fill='%237A0000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Biryani</text></svg>", alt: "Aromatic bowl of chicken biryani with spiced rice" },
+            { id: 2, name: "Shezan Surprise Ice Cream", price: 750, category: "popular", desc: "Signature Shezan house special ice cream dessert with rich nut toppings and layers.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><path d='M130 140 L150 60 L170 140 Z' fill='%23D4AF37'/><circle cx='150' cy='60' r='25' fill='%237A0000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Shezan Surprise Ice Cream</text></svg>", alt: "Special signature ice cream dessert topped with syrup and nuts" },
+            { id: 3, name: "Classic Club Sandwich", price: 899, category: "popular", desc: "Toasted triple-decker sandwich with roasted chicken, egg, cheese, and fresh salad.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><polygon points='100,130 150,70 200,130' fill='%23D4AF37'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Classic Club Sandwich</text></svg>", alt: "Triple decker toasted club sandwich served with french fries" },
+            { id: 4, name: "Classic Chicken Burger", price: 950, category: "popular", desc: "Juicy seasoned chicken patty topped with fresh lettuce, mayo, and cheese in a warm bun.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><circle cx='150' cy='100' r='45' fill='%23D4AF37'/><rect x='110' y='95' width='80' height='10' fill='%237A0000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Classic Chicken Burger</text></svg>", alt: "Juicy chicken burger served in a sesame bun" },
+
+            // Steaks
+            { id: 5, name: "Shezan Supreme Chicken Steak", price: 2490, category: "steaks", desc: "Grilled chicken breast served with rich mushroom sauce, sautéed vegetables, and fries.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><rect x='100' y='70' width='100' height='60' rx='10' fill='%237A0000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Supreme Chicken Steak</text></svg>", alt: "Sizzling supreme chicken steak with gravy and vegetables" },
+            { id: 6, name: "Chicken BBQ Steak", price: 1850, category: "steaks", desc: "Tender grilled chicken fillet glazed in smoky BBQ sauce served on a sizzling platter.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><rect x='100' y='70' width='100' height='60' rx='10' fill='%23520000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken BBQ Steak</text></svg>", alt: "Grilled BBQ chicken steak served sizzling" },
+
+            // Chinese
+            { id: 7, name: "Chicken Manchurian", price: 2150, category: "chinese", desc: "Diced chicken in a savory, garlic-infused tangy red gravy served fresh.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><circle cx='150' cy='100' r='50' fill='%23990000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Manchurian</text></svg>", alt: "Chicken Manchurian gravy served in a bowl" },
+            { id: 8, name: "Chicken Shashlik", price: 2150, category: "chinese", desc: "Boneless chicken cubes skewered with capsicum, onions, and spicy tomato glaze.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><line x1='80' y1='100' x2='220' y2='100' stroke='%237A0000' stroke-width='8'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Shashlik</text></svg>", alt: "Chicken Shashlik skewers served with red sauce" },
+            { id: 9, name: "Cashew Nuts Chicken", price: 2299, category: "chinese", desc: "Stir-fried chicken breast cooked with crunchy roasted cashew nuts and bell peppers.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><circle cx='150' cy='100' r='45' fill='%23D4AF37'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Cashew Nuts Chicken</text></svg>", alt: "Stir-fried chicken tossed with cashew nuts and peppers" },
+            { id: 10, name: "Black Pepper Chicken", price: 2099, category: "chinese", desc: "Sliced chicken cooked in aromatic freshly ground black pepper sauce and onions.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><circle cx='150' cy='100' r='45' fill='%23374151'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Black Pepper Chicken</text></svg>", alt: "Black pepper chicken stir fry with sauce" },
+            { id: 11, name: "Chicken Chili Dry", price: 2150, category: "chinese", desc: "Crispy chicken strips tossed with green chilies, ginger, and garlic sauce.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><rect x='110' y='80' width='80' height='40' fill='%23065F46'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Chili Dry</text></svg>", alt: "Crispy sliced chicken chili dry with green peppers" },
+            { id: 12, name: "Chicken Chow Mein", price: 1750, category: "chinese", desc: "Wok-fried egg noodles with shredded chicken and crunchy stir-fried vegetables.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><path d='M100 110 Q150 80 200 110 Q150 140 100 110 Z' fill='%23D4AF37'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Chow Mein</text></svg>", alt: "Stir-fried chicken chow mein noodles with vegetables" },
+
+            // Mains & Karahi / Handi
+            { id: 13, name: "Chicken Karahi", price: 1499, category: "mains", desc: "Traditional Pakistani wok-cooked chicken with fresh tomatoes, green chilies, and ginger.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><ellipse cx='150' cy='100' rx='55' ry='35' fill='%237A0000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Karahi</text></svg>", alt: "Authentic spicy chicken karahi served in wok" },
+            { id: 14, name: "Chicken White Makhni Karahi", price: 1850, category: "mains", desc: "Creamy white gravy chicken karahi garnished with fresh butter and cilantro.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><ellipse cx='150' cy='100' rx='55' ry='35' fill='%23FAF9F5' stroke='%23D4AF37' stroke-width='2'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken White Makhni</text></svg>", alt: "Rich creamy white makhni chicken karahi" },
+            { id: 15, name: "Chicken Handi", price: 1950, category: "mains", desc: "Boneless chicken pieces slow-cooked in rich clay pot gravy with yogurt and spices.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><circle cx='150' cy='100' r='45' fill='%23B8860B'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Handi</text></svg>", alt: "Creamy boneless chicken handi in clay pot" },
+            { id: 16, name: "Mutton Handi", price: 3150, category: "mains", desc: "Tender boneless mutton slow-simmered in aromatic handi gravy with traditional herbs.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><circle cx='150' cy='100' r='45' fill='%23520000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Mutton Handi</text></svg>", alt: "Rich boneless mutton handi dish" },
+
+            // Bar BQ
+            { id: 17, name: "Chicken Leg Tikka", price: 750, category: "barbq", desc: "Charcoal-grilled marinated chicken leg quarter with traditional spices.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><path d='M120 120 Q150 70 180 120 Z' fill='%237A0000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Leg Tikka</text></svg>", alt: "Charcoal grilled spicy chicken leg tikka" },
+            { id: 18, name: "Chicken Seekh Kabab", price: 1590, category: "barbq", desc: "Minced chicken seasoned with onions and herbs grilled on skewers over coals.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><rect x='80' y='95' width='140' height='12' rx='6' fill='%237A0000'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Seekh Kabab</text></svg>", alt: "Grilled minced chicken seekh kababs" },
+            { id: 19, name: "Chicken Malai Boti", price: 950, category: "barbq", desc: "Melt-in-your-mouth boneless chicken cubes marinated in cream, cheese, and mild herbs.", img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'><rect width='300' height='200' fill='%23F3F4F6'/><circle cx='120' cy='100' r='15' fill='%23FAF9F5'/><circle cx='150' cy='100' r='15' fill='%23FAF9F5'/><circle cx='180' cy='100' r='15' fill='%23FAF9F5'/><text x='150' y='180' text-anchor='middle' fill='%234B5563' font-size='12'>Chicken Malai Boti</text></svg>", alt: "Creamy grilled chicken malai boti skewered" }
+        ];
+
+        // Global State
+        let cart = [];
+        let currentCategory = 'all';
+
+        // Mock Operational Data for Dashboard
+        let mockOrders = [
+            { id: 'SHZ-8041', name: 'Zahid Hasan', items: 'Chicken Karahi x1, Chicken Biryani x2', total: 3799, status: 'Preparing' },
+            { id: 'SHZ-8042', name: 'Farhan Ali', items: 'Shezan Supreme Steak x1', total: 2640, status: 'Pending' },
+            { id: 'SHZ-8043', name: 'Saima Khan', items: 'Chicken Malai Boti x2, Chicken Chow Mein x1', total: 3800, status: 'Delivered' }
+        ];
+
+        let mockBookings = [
+            { id: 'RES-102', name: 'Usman Malik', phone: '+92 300 8877665', datetime: '2026-11-01 20:00', guests: '4 Guests', status: 'Confirmed' },
+            { id: 'RES-103', name: 'Dr. Noman', phone: '+92 321 4433221', datetime: '2026-11-02 21:00', guests: '8 Guests', status: 'Seated' }
+        ];
+
+        let isListingActive = true;
+
+        // Initialize on Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMenu();
+            renderDashboardOrders();
+            renderDashboardBookings();
+            checkCookieConsent();
+        });
+
+        // Navigation Switcher
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            const targetSection = document.getElementById(viewId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Update Header Nav Active state
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            if (viewId === 'home-view') document.getElementById('nav-home').classList.add('active');
+            if (viewId === 'reservation-view') document.getElementById('nav-reservation').classList.add('active');
+            if (viewId === 'contact-view') document.getElementById('nav-contact').classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Menu Grid
+        function renderMenu() {
+            const container = document.getElementById('menu-container');
+            container.innerHTML = '';
+
+            const filtered = currentCategory === 'all' 
+                ? MENU_ITEMS 
+                : MENU_ITEMS.filter(item => item.category === currentCategory);
+
+            filtered.forEach(item => {
+                const card = document.createElement('article');
+                card.className = 'dish-card';
+                card.innerHTML = `
+                    <img src="${item.img}" alt="${item.alt}" class="dish-img" loading="lazy">
+                    <div class="dish-body">
+                        <h3 class="dish-title">${item.name}</h3>
+                        <p class="dish-desc">${item.desc}</p>
+                        <div class="dish-footer">
+                            <span class="dish-price">Rs. ${item.price.toLocaleString()}</span>
+                            <button class="btn-add" onclick="addToCart(${item.id})" aria-label="Add ${item.name} to order cart">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Category Filter
+        function filterCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected', 'false');
+            });
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+            renderMenu();
+        }
+
+        // Shopping Cart Logic
+        function addToCart(itemId) {
+            const dish = MENU_ITEMS.find(m => m.id === itemId);
+            if (!dish) return;
+
+            const existing = cart.find(c => c.id === itemId);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...dish, qty: 1 });
+            }
+            updateCartBadge();
+            openCartModal();
+        }
+
+        function updateCartBadge() {
+            const totalCount = cart.reduce((sum, i) => sum + i.qty, 0);
+            document.getElementById('cart-count-badge').textContent = totalCount;
+        }
+
+        function openCartModal() {
+            renderCartItems();
+            const modal = document.getElementById('cart-modal');
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeCartModal() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+
+        function renderCartItems() {
+            const listContainer = document.getElementById('cart-items-list');
+            listContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                listContainer.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">Your ordering cart is empty.</p>';
+                document.getElementById('cart-subtotal').textContent = 'Rs. 0';
+                document.getElementById('cart-total').textContent = 'Rs. 150';
+                return;
+            }
+
+            let subtotal = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.qty;
+                subtotal += itemTotal;
+
+                const row = document.createElement('div');
+                row.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);';
+                row.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">Rs. ${item.price} x ${item.qty}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-weight: bold;">Rs. ${itemTotal.toLocaleString()}</span>
+                        <button onclick="removeFromCart(${item.id})" style="background: none; border: none; color: #991B1B; cursor: pointer; font-weight: bold;" aria-label="Remove item">&times;</button>
+                    </div>
+                `;
+                listContainer.appendChild(row);
+            });
+
+            document.getElementById('cart-subtotal').textContent = `Rs. ${subtotal.toLocaleString()}`;
+            document.getElementById('cart-total').textContent = `Rs. ${(subtotal + 150).toLocaleString()}`;
+        }
+
+        function removeFromCart(itemId) {
+            cart = cart.filter(i => i.id !== itemId);
+            updateCartBadge();
+            renderCartItems();
+        }
+
+        function handleCheckout(e) {
+            e.preventDefault();
+            if (cart.length === 0) {
+                alert('Please add at least one dish to your cart before ordering.');
+                return;
+            }
+
+            const name = document.getElementById('order-name').value;
+            const phone = document.getElementById('order-phone').value;
+            const itemsSummary = cart.map(i => `${i.name} x${i.qty}`).join(', ');
+            const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            const total = subtotal + 150;
+
+            const newOrder = {
+                id: `SHZ-${Math.floor(1000 + Math.random() * 9000)}`,
+                name: name,
+                items: itemsSummary,
+                total: total,
+                status: 'Pending'
+            };
+
+            mockOrders.unshift(newOrder);
+            renderDashboardOrders();
+
+            cart = [];
+            updateCartBadge();
+            closeCartModal();
+            
+            alert(`Thank you ${name}! Your cash-on-delivery order (${newOrder.id}) has been placed successfully with Shezan Restaurant Fortress.`);
+        }
+
+        // Handle Reservation Form Submit
+        function handleReservationSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('res-name').value;
+            const phone = document.getElementById('res-phone').value;
+            const date = document.getElementById('res-date').value;
+            const time = document.getElementById('res-time').value;
+            const guests = document.getElementById('res-guests').value;
+
+            const newBooking = {
+                id: `RES-${Math.floor(100 + Math.random() * 900)}`,
+                name: name,
+                phone: phone,
+                datetime: `${date} ${time}`,
+                guests: `${guests} Guests`,
+                status: 'Confirmed'
+            };
+
+            mockBookings.unshift(newBooking);
+            renderDashboardBookings();
+
+            document.getElementById('reservation-form').reset();
+            alert(`Table reservation confirmed for ${name} on ${date} at ${time}. Confirmation code: ${newBooking.id}.`);
+        }
+
+        // Handle Contact Form Submit
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            document.getElementById('contact-form').reset();
+            alert(`Thank you ${name}. Your message has been received by Shezan Restaurant Fortress management.`);
+        }
+
+        // Legal Tab Navigation Content Renderer
+        function showLegalTab(tab) {
+            const container = document.getElementById('legal-content-container');
+            document.querySelectorAll('#legal-view .dash-tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const selectedBtn = document.getElementById(`legal-tab-${tab}`);
+            if (selectedBtn) selectedBtn.classList.add('active');
+
+            if (tab === 'terms') {
+                container.innerHTML = `
+                    <h3>Terms & Conditions</h3>
+                    <p>Welcome to Shezan Restaurant Fortress. By placing an order, booking a table, or viewing our online menu, you agree to comply with these terms.</p>
+                    <br><p><strong>1. Pricing and Availability:</strong> All prices are displayed in Pakistani Rupees (PKR / Rs.) and include applicable government taxes. Prices and menu availability are subject to change without prior notice.</p>
+                    <br><p><strong>2. Order Fulfillment:</strong> Delivery times provided are estimated based on local Lahore traffic and weather conditions.</p>
+                `;
+            } else if (tab === 'privacy') {
+                container.innerHTML = `
+                    <h3>Privacy Policy</h3>
+                    <p>Shezan International Limited operates Shezan Restaurant Fortress. We respect your personal data and privacy.</p>
+                    <br><p><strong>Data Collected:</strong> We collect minimal necessary information including your name, contact phone number, and delivery address strictly for order fulfillment and table booking.</p>
+                    <br><p><strong>Data Sharing:</strong> We do not sell or rent your personal data to third-party marketing companies.</p>
+                `;
+            } else if (tab === 'refund') {
+                container.innerHTML = `
+                    <h3>Refund & Cancellation Policy</h3>
+                    <p>We take pride in our food quality and service standards at Fortress Stadium, Lahore.</p>
+                    <br><p><strong>Order Cancellations:</strong> Orders may be cancelled within 10 minutes of placement by calling our restaurant hotline directly (+92 42 36623000).</p>
+                    <br><p><strong>Quality Concerns:</strong> If an order arrives incomplete or damaged, please contact us immediately for a replacement or store credit.</p>
+                `;
+            } else if (tab === 'tos') {
+                container.innerHTML = `
+                    <h3>Terms of Service</h3>
+                    <p>These Terms of Service govern your use of the official web application of Shezan Restaurant Fortress.</p>
+                    <br><p><strong>Acceptable Use:</strong> Users must provide accurate contact and address details when placing orders or scheduling reservations.</p>
+                `;
+            } else if (tab === 'cookies') {
+                container.innerHTML = `
+                    <h3>Cookie Policy</h3>
+                    <p>Our website utilizes local storage and essential session cookies strictly to save your shopping cart contents and table reservation selections.</p>
+                    <br><p><strong>No Unsolicited Tracking:</strong> We do not load non-essential third-party tracking scripts prior to obtaining your consent.</p>
+                `;
+            } else if (tab === 'deletion') {
+                container.innerHTML = `
+                    <h3>Data Deletion Request</h3>
+                    <p>In accordance with data protection guidelines, you have the right to request deletion of your contact information held in our delivery records.</p>
+                    <br>
+                    <div class="form-card" style="margin-top: 1rem;">
+                        <form onsubmit="handleDataDeletion(event)">
+                            <div class="form-group">
+                                <label for="del-email">Your Registered Phone or Email *</label>
+                                <input type="text" id="del-email" class="form-control" required placeholder="Enter phone or email used for orders">
+                            </div>
+                            <div class="form-group">
+                                <label for="del-reason">Reason for Request (Optional)</label>
+                                <textarea id="del-reason" class="form-control" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">Submit Data Deletion Request</button>
+                        </form>
+                    </div>
+                `;
+            }
+        }
+
+        function handleDataDeletion(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('del-email').value;
+            alert(`Data deletion request logged for ${identifier}. Records will be processed in accordance with privacy laws.`);
+            document.getElementById('del-email').value = '';
+        }
+
+        // Restaurant Dashboard Sub-Tabs & Operations
+        function switchDashTab(tabId) {
+            document.querySelectorAll('.dash-sub-view').forEach(v => v.style.display = 'none');
+            document.querySelectorAll('.dash-tab-btn').forEach(b => b.classList.remove('active'));
+
+            document.getElementById(tabId).style.display = 'block';
+            
+            if (tabId === 'dash-orders') document.getElementById('dash-btn-orders').classList.add('active');
+            if (tabId === 'dash-bookings') document.getElementById('dash-btn-bookings').classList.add('active');
+            if (tabId === 'dash-listing') document.getElementById('dash-btn-listing').classList.add('active');
+            if (tabId === 'dash-payments') document.getElementById('dash-btn-payments').classList.add('active');
+        }
+
+        function renderDashboardOrders() {
+            const tbody = document.getElementById('orders-table-body');
+            tbody.innerHTML = '';
+
+            mockOrders.forEach(order => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${order.id}</strong></td>
+                    <td>${order.name}</td>
+                    <td>${order.items}</td>
+                    <td>Rs. ${order.total.toLocaleString()}</td>
+                    <td><span class="status-badge status-${order.status.toLowerCase()}">${order.status}</span></td>
+                    <td>
+                        <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding: 0.2rem; border-radius: 4px;">
+                            <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="Preparing" ${order.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
+                            <option value="Ready" ${order.status === 'Ready' ? 'selected' : ''}>Ready</option>
+                            <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            const order = mockOrders.find(o => o.id === orderId);
+            if (order) {
+                order.status = newStatus;
+                renderDashboardOrders();
+            }
+        }
+
+        function renderDashboardBookings() {
+            const tbody = document.getElementById('bookings-table-body');
+            tbody.innerHTML = '';
+
+            mockBookings.forEach(b => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${b.id}</strong></td>
+                    <td>${b.name}</td>
+                    <td>${b.phone}</td>
+                    <td>${b.datetime}</td>
+                    <td>${b.guests}</td>
+                    <td><span class="status-badge status-${b.status.toLowerCase()}">${b.status}</span></td>
+                    <td>
+                        <select onchange="updateBookingStatus('${b.id}', this.value)" style="padding: 0.2rem; border-radius: 4px;">
+                            <option value="Confirmed" ${b.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                            <option value="Seated" ${b.status === 'Seated' ? 'selected' : ''}>Seated</option>
+                            <option value="Completed" ${b.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                            <option value="Cancelled" ${b.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateBookingStatus(bookingId, newStatus) {
+            const booking = mockBookings.find(b => b.id === bookingId);
+            if (booking) {
+                booking.status = newStatus;
+                renderDashboardBookings();
+            }
+        }
+
+        function toggleListingStatus() {
+            isListingActive = !isListingActive;
+            const statusText = document.getElementById('listing-status-text');
+            const btn = document.getElementById('toggle-listing-btn');
+
+            if (isListingActive) {
+                statusText.textContent = "LISTING IS CURRENTLY ACTIVE & ACCEPTING ORDERS";
+                statusText.style.color = "#065F46";
+                btn.textContent = "Toggle Deactivate Listing";
+            } else {
+                statusText.textContent = "LISTING IS TEMPORARILY DEACTIVATED (PAUSED)";
+                statusText.style.color = "#991B1B";
+                btn.textContent = "Toggle Activate Listing";
+            }
+        }
+
+        function updateSiteContent() {
+            const newTitle = document.getElementById('dash-banner-title').value;
+            const newSub = document.getElementById('dash-banner-sub').value;
+
+            document.getElementById('site-announcement-title').textContent = newTitle;
+            document.getElementById('site-announcement-subtitle').textContent = newSub;
+
+            alert('Site hero announcement copy updated successfully.');
+        }
+
+        // Cookie Consent Banner Control
+        function checkCookieConsent() {
+            const consent = localStorage.getItem('shezan_cookie_consent');
+            if (!consent) {
+                document.getElementById('cookie-banner').style.display = 'block';
+            }
+        }
+
+        function acceptAllCookies() {
+            localStorage.setItem('shezan_cookie_consent', 'accepted_all');
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+
+        function rejectNonEssentialCookies() {
+            localStorage.setItem('shezan_cookie_consent', 'essential_only');
+            document.getElementById('cookie-banner').style.display = 'none';
+        }
+
+        function openCookieSettings() {
+            document.getElementById('cookie-banner').style.display = 'block';
+        }
+
+        // Initialize Legal view with default terms
+        showLegalTab('terms');
+    </script>
+</body>
+</html>
